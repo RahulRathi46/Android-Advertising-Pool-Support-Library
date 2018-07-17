@@ -10,13 +10,11 @@ variables:
 before_script:
   - apt-get --quiet update --yes
   - apt-get --quiet install --yes wget tar unzip lib32stdc++6 lib32z1
-  - wget --quiet --output-document=android.zip https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
-  - wget --quiet --output-document=android-sdk.tgz https://dl.google.com/android/android-sdk_r${ANDROID_SDK_TOOLS}-linux.tgz
-  - tar --extract --gzip --file=android-sdk.tgz
-  - unzip android.zip -d android
+  - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+  - unzip android-sdk.zip -d android-sdk-linux
   - ls
-  - android/tools/bin/sdkmanager --update
-  - (echo y ; echo y ; echo y ; echo y ; echo y ; ) | android/tools/bin/sdkmanager --licenses
+  - android-sdk-linux/tools/bin/sdkmanager --update
+  - (echo y ; echo y ; echo y ; echo y ; echo y ; ) | android-sdk-linux/tools/bin/sdkmanager --licenses
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=$PATH:$PWD/android-sdk-linux/platform-tools/
   - ls $PWD/android-sdk-linux/tools/bin
