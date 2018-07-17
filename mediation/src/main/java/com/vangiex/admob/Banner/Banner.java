@@ -10,5 +10,5 @@ public class Banner {
     private AdRequest Request;
     private AdView view;
 
-    
+
 }

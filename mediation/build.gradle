@@ -2,9 +2,6 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 26
-
-
-
     defaultConfig {
         minSdkVersion 18
         targetSdkVersion 26
@@ -14,14 +11,13 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
+    buildToolsVersion '27.0.3'
 }
 
 dependencies {
@@ -32,16 +28,13 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.squareup.picasso:picasso:2.5.2'
-
     // Skds
     implementation 'com.google.android.gms:play-services-ads:15.0.1'
     implementation 'com.facebook.android:audience-network-sdk:4.99.1'
     implementation 'com.unity3d.ads:unity-ads:2.2.1'
     implementation 'com.inmobi.monetization:inmobi-ads:7.1.1'
-
     // Mediation Adopter
     implementation 'com.google.ads.mediation:facebook:4.28.2.0'
     implementation 'com.google.ads.mediation:unity:2.2.1.0'
     implementation 'com.google.ads.mediation:inmobi:7.1.1.0'
-
 }
