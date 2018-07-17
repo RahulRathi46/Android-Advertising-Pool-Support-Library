@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BannerView">
+        <attr name="Size" format="string" />
+        <attr name="UnitId" format="string" />
+    </declare-styleable>
+</resources>
