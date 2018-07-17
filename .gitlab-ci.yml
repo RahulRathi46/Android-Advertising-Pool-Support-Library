@@ -13,7 +13,7 @@ before_script:
   - wget --quiet --output-document=android-sdk.zip https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
   - unzip android-sdk.zip -d android-sdk-linux
   - ls
-  - sdkmanager --update && yes | sdkmanager --licenses
+  - android-sdk-linux/tools/bin/sdkmanager --update && yes | android-sdk-linux/tools/bin/sdkmanager --licenses
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=$PATH:$PWD/android-sdk-linux/platform-tools/
   - ls $PWD/android-sdk-linux/tools/bin
