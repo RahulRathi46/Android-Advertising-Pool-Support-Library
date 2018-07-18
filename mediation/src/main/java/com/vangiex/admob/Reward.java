@@ -9,6 +9,8 @@ import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
+import java.util.concurrent.ExecutionException;
+
 public class Reward  {
 
     private Context ctx;
@@ -16,51 +18,49 @@ public class Reward  {
     private RewardedVideoAd mRewardedVideoAd;
 
     // Mode : Auto
-    public Reward(Context ctx, String UnitId) {
+    public Reward(Context ctx, String UnitId) throws ExecutionException, InterruptedException {
         this.ctx = ctx;
         this.UnitId = UnitId;
-        new RewardAsyn().execute();
+        Init();
+        Request();
+        AddListener();
     }
 
-    // Mode mannull
     public Reward(Context ctx) {
         this.ctx = ctx;
+        Init();
     }
 
-    class RewardAsyn extends AsyncTask<Void, Void, AdRequest> {
-
-        @Override
-        protected void onPreExecute() {
-            if (UnitId == null) {
-                UnitId = "ca-app-pub-3940256099942544/5224354917";
-            }
-            mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(ctx);
-        }
-
-        @Override
-        protected AdRequest doInBackground(Void... voids) {
-
-            AdRequest request = new AdRequest.Builder().build();
-            return request;
-        }
-
-        @Override
-        protected void onPostExecute(AdRequest request) {
-            super.onPostExecute(request);
-            mRewardedVideoAd.loadAd(UnitId, request);
-            mRewardedVideoAd.setRewardedVideoAdListener(new Listener());
-        }
+    public String getUnitId() {
+        return UnitId;
     }
 
-    class RequestAsyn extends AsyncTask<Void, Void, AdRequest> {
-        @Override
-        protected AdRequest doInBackground(Void... voids) {
-
-            AdRequest request = new AdRequest.Builder().build();
-            return request;
-        }
+    public void setUnitId(String unitId) throws ExecutionException, InterruptedException {
+        UnitId = unitId;
+        Request();
     }
 
+    private void Init()
+    {
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(ctx);
+    }
+
+    private void Request() throws ExecutionException, InterruptedException {
+        if (UnitId == null) {
+            UnitId = "ca-app-pub-3940256099942544/5224354917";
+        }
+        mRewardedVideoAd.loadAd(UnitId, new Request().execute().get());
+    }
+
+    private void AddListener(){
+        mRewardedVideoAd.setRewardedVideoAdListener(new Listener());
+    }
+
+    public void show(){
+        if (mRewardedVideoAd.isLoaded()) {
+            mRewardedVideoAd.show();
+        }
+    }
 
     class Listener implements RewardedVideoAdListener {
 

@@ -1,71 +1,63 @@
 package com.vangiex.admob;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+
+import java.util.concurrent.ExecutionException;
 
 public class Interstitial {
 
     private InterstitialAd mInterstitialAd;
-    private String UnitId;
+    private String unitId;
     private Context ctx;
 
-    // Mode : Mannual
-    public Interstitial(Context ctx)
-    {
+    public Interstitial(Context ctx, String UnitId) throws ExecutionException, InterruptedException {
+        this.unitId = UnitId;
         this.ctx = ctx;
+        Init();
+        RequestAd();
+        Addlistener();
     }
 
-    // Mode : Auto Mode
-    public Interstitial(Context ctx,String unitId) {
-        UnitId = unitId;
-        mInterstitialAd = new InterstitialAd(ctx);
-        mInterstitialAd.setAdUnitId(unitId);
-        new InterstitialAsyn().execute();
-    }
-
-    // Mode : Auto Mode & Mannual Show
-    public Interstitial(Context ctx,String unitId,Boolean Flag_Show) {
-        UnitId = unitId;
+    public Interstitial(String unitId, Context ctx) throws ExecutionException, InterruptedException {
+        this.unitId = unitId;
         this.ctx = ctx;
-        mInterstitialAd = new InterstitialAd(ctx);
-        mInterstitialAd.setAdUnitId(unitId);
-        if(Flag_Show) {
-            new InterstitialAsyn().execute();
-        }else {
-            new InterstitialRequestAsyn().execute();
-        }
+        Init();
+        RequestAd();
     }
 
-    public boolean show()
-    {
+    public void show() {
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
-            return true;
+            Log.d("TAG", "opened----------------------------------------------");
         } else {
             Log.d("TAG", "The interstitial wasn't loaded yet.");
-            return false;
         }
     }
 
-    public InterstitialAd getmInterstitialAd() {
-        return mInterstitialAd;
+
+    private void Addlistener() {
+        mInterstitialAd.setAdListener(new Listener());
     }
 
-    public void setmInterstitialAd(InterstitialAd mInterstitialAd) {
-        this.mInterstitialAd = mInterstitialAd;
+    private void RequestAd() throws ExecutionException, InterruptedException {
+        mInterstitialAd.loadAd(new Request().execute().get());
+    }
+
+    private void Init() {
+        mInterstitialAd = new InterstitialAd(ctx);
+        mInterstitialAd.setAdUnitId(unitId);
     }
 
     public String getUnitId() {
-        return UnitId;
+        return unitId;
     }
 
     public void setUnitId(String unitId) {
-        UnitId = unitId;
+        this.unitId = unitId;
     }
 
     public Context getCtx() {
@@ -76,55 +68,11 @@ public class Interstitial {
         this.ctx = ctx;
     }
 
-    class InterstitialAsyn extends AsyncTask<Void,Void,Boolean>{
-
-        private AdRequest Request;
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            Request = new AdRequest.Builder().build();
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            mInterstitialAd.loadAd(Request);
-            mInterstitialAd.setAdListener(new Listener());
-            Log.d("TAG", "ADTASK-------------------------------------------------");
-        }
+    public InterstitialAd getmInterstitialAd() {
+        return mInterstitialAd;
     }
 
-    class InterstitialRequestAsyn extends AsyncTask<Void, Void, Boolean> {
-
-        private AdRequest Request;
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            Request = new AdRequest.Builder().build();
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            mInterstitialAd.loadAd(Request);
-            Log.d("TAG", "ADSYN__________________________");
-        }
-    }
-
-    class RequestAsyn extends AsyncTask<Void,Void,AdRequest>{
-
-        AdRequest Request;
-        @Override
-        protected AdRequest doInBackground(Void... Voids) {
-            Request = new AdRequest.Builder().build();
-            Log.d("TAG", "ADREQUEST--------------------------------------");
-            return Request;
-        }
-    }
-
-    class Listener extends AdListener{
+    class Listener extends AdListener {
 
         @Override
         public void onAdLoaded() {

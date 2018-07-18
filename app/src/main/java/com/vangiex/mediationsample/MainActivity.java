@@ -8,6 +8,8 @@ import com.vangiex.admob.Banner;
 import com.vangiex.admob.Interstitial;
 import com.vangiex.admob.Reward;
 
+import java.util.concurrent.ExecutionException;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -15,16 +17,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         Banner banner = new Banner();
         banner.setView(findViewById(R.id.adView));
-        banner.Show();
+        try {
+            banner.show();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        Interstitial i = new Interstitial(this,"ca-app-pub-8949106420284340/3405468137");
+        try {
+            Interstitial i = new Interstitial(this,"ca-app-pub-3940256099942544/1033173712");
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        Reward r = new Reward(this,"ca-app-pub-3940256099942544/5224354917");
 
-
+        try {
+            Reward r = new Reward(this,"ca-app-pub-3940256099942544/5224354917");
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
 
     }
