@@ -15,6 +15,7 @@ public class Banner {
     // Mode : auto show
     public Banner(View viewById) throws ExecutionException, InterruptedException {
         this.view = (AdView) viewById;
+        view.setAdListener(new Listener("BANNER"));
         show();
     }
 

@@ -2,6 +2,7 @@ package com.vangiex.admob;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
@@ -10,6 +11,8 @@ import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import java.util.concurrent.ExecutionException;
+
+import static com.google.ads.mediation.unity.UnityAdapter.TAG;
 
 public class Reward  {
 
@@ -53,7 +56,7 @@ public class Reward  {
     }
 
     private void AddListener(){
-        mRewardedVideoAd.setRewardedVideoAdListener(new Listener());
+        mRewardedVideoAd.setRewardedVideoAdListener(new Listener("RewardedVideo".toUpperCase()));
     }
 
     public void show(){
@@ -62,58 +65,26 @@ public class Reward  {
         }
     }
 
-    class Listener implements RewardedVideoAdListener {
+
+    class Listener extends RewardAdListener
+    {
+        public Listener(String TAG) {
+            super(TAG);
+        }
 
         @Override
         public void onRewardedVideoAdLoaded() {
 
             if (mRewardedVideoAd.isLoaded()) {
                 mRewardedVideoAd.show();
-
+                super.onRewardedVideoAdLoaded();
             } else {
                 onRewardedVideoAdFailedToLoad(1);
             }
         }
-
-        @Override
-        public void onRewardedVideoAdOpened() {
-
-
-        }
-
-        @Override
-        public void onRewardedVideoStarted() {
-
-        }
-
-        @Override
-        public void onRewardedVideoAdClosed() {
-
-
-        }
-
-        @Override
-        public void onRewarded(RewardItem rewardItem) {
-
-        }
-
-        @Override
-        public void onRewardedVideoAdLeftApplication() {
-
-        }
-
-        @Override
-        public void onRewardedVideoAdFailedToLoad(int i) {
-
-
-        }
-
-        @Override
-        public void onRewardedVideoCompleted() {
-
-
-        }
     }
+
+
 
 
 }

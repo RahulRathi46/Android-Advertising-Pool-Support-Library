@@ -32,15 +32,15 @@ public class Interstitial {
     public void show() {
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
-            Log.d("TAG", "opened----------------------------------------------");
+            Log.d("ADMOB", "opened----------------------------------------------");
         } else {
-            Log.d("TAG", "The interstitial wasn't loaded yet.");
+            Log.d("ADMOB", "The interstitial wasn't loaded yet.");
         }
     }
 
 
     private void Addlistener() {
-        mInterstitialAd.setAdListener(new Listener());
+        mInterstitialAd.setAdListener(new Listener("Interstitial".toUpperCase()));
     }
 
     private void RequestAd() throws ExecutionException, InterruptedException {
@@ -72,43 +72,22 @@ public class Interstitial {
         return mInterstitialAd;
     }
 
-    class Listener extends AdListener {
+    class IListener extends Listener {
+
+        public IListener(String TAG) {
+            super(TAG);
+        }
 
         @Override
         public void onAdLoaded() {
             // Code to be executed when an ad finishes loading.
             if (mInterstitialAd.isLoaded()) {
                 mInterstitialAd.show();
-                Log.d("TAG", "opened----------------------------------------------");
+                super.onAdLoaded();
             } else {
-                Log.d("TAG", "The interstitial wasn't loaded yet.");
+                Log.d(TAG, "The interstitial wasn't loaded yet.");
             }
         }
-
-        @Override
-        public void onAdFailedToLoad(int errorCode) {
-            // Code to be executed when an ad request fails.
-            Log.d("TAG", "fail------------------------------------------");
-        }
-
-        @Override
-        public void onAdOpened() {
-            // Code to be executed when the ad is displayed.
-            Log.d("TAG", "opened--------------------------------.");
-        }
-
-        @Override
-        public void onAdLeftApplication() {
-            // Code to be executed when the user has left the app.
-            Log.d("TAG", "application--------------------------------------");
-        }
-
-        @Override
-        public void onAdClosed() {
-            // Code to be executed when when the interstitial ad is closed.
-            Log.d("TAG", "closed---------------------------------------------");
-        }
     }
-
 }
 
