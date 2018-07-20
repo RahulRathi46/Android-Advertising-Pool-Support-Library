@@ -14,6 +14,7 @@ public class Interstitial {
     private String unitId;
     private Context ctx;
 
+    // Mode : Auto
     public Interstitial(Context ctx, String UnitId) throws ExecutionException, InterruptedException {
         this.unitId = UnitId;
         this.ctx = ctx;
@@ -22,19 +23,25 @@ public class Interstitial {
         Addlistener();
     }
 
-    public Interstitial(String unitId, Context ctx) throws ExecutionException, InterruptedException {
+    // Mode : Mannully
+    public Interstitial(Context ctx , String unitId , Boolean FLAG_AUTOSHOW) throws ExecutionException, InterruptedException {
         this.unitId = unitId;
         this.ctx = ctx;
         Init();
         RequestAd();
+        if(FLAG_AUTOSHOW)
+        {
+            Addlistener();
+        }
+
     }
 
     public void show() {
         if (mInterstitialAd.isLoaded()) {
             mInterstitialAd.show();
-            Log.d("ADMOB", "opened----------------------------------------------");
+            Log.d("ADMOBINTERSTITAL", "ad loaded!");
         } else {
-            Log.d("ADMOB", "The interstitial wasn't loaded yet.");
+            Log.d("ADMOBINTERSTITAL", "ad wasn't loaded yet.");
         }
     }
 

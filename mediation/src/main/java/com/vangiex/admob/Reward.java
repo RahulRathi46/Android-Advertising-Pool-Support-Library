@@ -29,6 +29,7 @@ public class Reward  {
         AddListener();
     }
 
+    // Mode : Mannully
     public Reward(Context ctx) {
         this.ctx = ctx;
         Init();
@@ -62,6 +63,11 @@ public class Reward  {
     public void show(){
         if (mRewardedVideoAd.isLoaded()) {
             mRewardedVideoAd.show();
+            Log.d("ADMOBREWARD", "ad loaded!");
+        }
+        else
+        {
+            Log.d("ADMOBREWARD", "ad wasn't loaded yet!");
         }
     }
 
